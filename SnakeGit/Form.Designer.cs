@@ -40,7 +40,7 @@ namespace SnakeGit
             this.PictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PictureBox.Location = new System.Drawing.Point(0, 0);
             this.PictureBox.Name = "PictureBox";
-            this.PictureBox.Size = new System.Drawing.Size(632, 454);
+            this.PictureBox.Size = new System.Drawing.Size(434, 411);
             this.PictureBox.TabIndex = 0;
             this.PictureBox.TabStop = false;
             // 
@@ -53,7 +53,7 @@ namespace SnakeGit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(632, 454);
+            this.ClientSize = new System.Drawing.Size(434, 411);
             this.Controls.Add(this.PictureBox);
             this.Name = "Form";
             this.Text = "Snake";

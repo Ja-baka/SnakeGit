@@ -26,10 +26,10 @@ namespace SnakeGit
         private readonly int width;
         private readonly int height;
 
-        private readonly SolidBrush blackBrush;
-        private readonly SolidBrush greenBrush;
-        private readonly SolidBrush whiteBrush;
-        private readonly Pen blackPen;
+        private readonly SolidBrush bluekBrush = new SolidBrush(Color.FromArgb(73, 119, 238));
+        private readonly SolidBrush redBrush = new SolidBrush(Color.FromArgb(231, 71, 29));
+        private readonly SolidBrush greenBrush = new SolidBrush(Color.FromArgb(170, 215, 81));
+        private readonly Pen blackPen = new Pen(Color.Black, 3);
 
         private Point[] snake;
         private Point apple;
@@ -52,11 +52,6 @@ namespace SnakeGit
             snake[0].X = width / 2;
             snake[0].Y = height / 2;
 
-            whiteBrush = new SolidBrush(Color.White);
-            greenBrush = new SolidBrush(Color.Green);
-            blackBrush = new SolidBrush(Color.Black);
-            blackPen = new Pen(Color.Black, 3);
-
             apple.X = random.Next(1, width);
             apple.Y = random.Next(1, height);
         }
@@ -65,21 +60,26 @@ namespace SnakeGit
         {
             Graphics graphics = Graphics.FromImage(PictureBox.Image);
 
-            graphics.FillRectangle(whiteBrush, 0, 0, PictureBox.Width, PictureBox.Height);
+            graphics.FillRectangle(greenBrush, 0, 0, PictureBox.Width, PictureBox.Height);
             graphics.DrawRectangle(blackPen, 0, 0, width * SIZE, height * SIZE);
+
             if (length > 4)
-            for (int i = 1; i < length; i++)
-                for (int j = i + 1; j < length; j++)
+            {
+                for (int i = 1; i < length; i++)
                 {
-                    if (snake[i].X == snake[j].X && snake[i].Y == snake[j].Y)
+                    for (int j = i + 1; j < length; j++)
+                    {
+                        if (snake[i].X == snake[j].X && snake[i].Y == snake[j].Y)
                         {
-                        length = 3;
+                            length = 3;
                             WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
 
                             wplayer.URL = "oof.mp3";
                             wplayer.controls.play();
                         }
+                    }
                 }
+            }
 
             for (int i = 0; i < length; i++)
             {
@@ -87,7 +87,7 @@ namespace SnakeGit
                 snake[0].Y += snake[0].Y < 0 ? height : 0;
                 snake[0].X -= snake[0].X >= width ? width : 0;
                 snake[0].Y -= snake[0].Y >= height ? height : 0;
-                graphics.FillEllipse(blackBrush, snake[i].X * SIZE, snake[i].Y * SIZE, SIZE, SIZE);
+                graphics.FillRectangle(bluekBrush, snake[i].X * SIZE, snake[i].Y * SIZE, SIZE, SIZE);
                 if (apple.X == snake[i].X && apple.Y == snake[i].Y)
                 {
                     apple.X = random.Next(1, width - 1);
@@ -99,7 +99,8 @@ namespace SnakeGit
                     wplayer.controls.play();
                 }
             }
-            graphics.FillEllipse(greenBrush, apple.X * SIZE, apple.Y * SIZE, SIZE, SIZE);
+
+            graphics.FillEllipse(redBrush, apple.X * SIZE, apple.Y * SIZE, SIZE, SIZE);
             switch (direction)
             {
                 case Direction.Up:
