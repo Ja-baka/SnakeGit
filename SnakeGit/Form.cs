@@ -10,27 +10,38 @@ using System.Windows.Forms;
 
 namespace SnakeGit
 {
-    public partial class Form1 : Form
+    // перечисление вместо строки
+    public enum Direction : byte
     {
-        private SolidBrush blackBrush;
-        private SolidBrush greenBrush;
-        private SolidBrush whiteBrush;
-        private Pen blackPen;
+        Up,
+        Down,
+        Left,
+        Right
+    }
+
+    public partial class Form : System.Windows.Forms.Form
+    {
+        private const int SIZE = 30;
+        private readonly SolidBrush blackBrush;
+        private readonly SolidBrush greenBrush;
+        private readonly SolidBrush whiteBrush;
+        private readonly Pen blackPen;
         private Point[] snake;
         private Point apple;
-        private Random random;
+        private readonly Random random;
         private int length = 1;
-        private int width;
-        private int height;
-        private string direction = "up";
-        public Form1()
+        private readonly int width;
+        private readonly int height;
+        private Direction direction = Direction.Up;
+        // private string direction = "up";
+        public Form()
         {
             InitializeComponent();
             random = new Random();
             snake = new Point[10000];
-            pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-            width = pictureBox1.Width / 10;
-            height = pictureBox1.Height / 10;
+            PictureBox.Image = new Bitmap(PictureBox.Width, PictureBox.Height);
+            width = PictureBox.Width / SIZE;
+            height = PictureBox.Height / SIZE;
             snake[0].X = width / 2;
             snake[0].Y = height / 2;
             whiteBrush = new SolidBrush(Color.White);
@@ -43,10 +54,10 @@ namespace SnakeGit
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Graphics graphics = Graphics.FromImage(pictureBox1.Image);
+            Graphics graphics = Graphics.FromImage(PictureBox.Image);
 
-            graphics.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
-            graphics.DrawRectangle(blackPen, 0, 0, width * 10, height * 10);
+            graphics.FillRectangle(whiteBrush, 0, 0, PictureBox.Width, PictureBox.Height);
+            graphics.DrawRectangle(blackPen, 0, 0, width * SIZE, height * SIZE);
             if (length > 4)
             for (int i = 1; i < length; i++)
                 for (int j = i + 1; j < length; j++)
@@ -67,7 +78,7 @@ namespace SnakeGit
                 if (snake[i].X > width) snake[i].X -= width;
                 if (snake[i].Y < 0) snake[i].Y += height;
                 if (snake[i].Y > height) snake[i].Y -= height;
-                graphics.FillEllipse(blackBrush, snake[i].X * 10, snake[i].Y * 10, 10, 10);
+                graphics.FillEllipse(blackBrush, snake[i].X * SIZE, snake[i].Y * SIZE, SIZE, SIZE);
                 if (apple.X == snake[i].X && apple.Y == snake[i].Y)
                 {
                     apple.X = random.Next(1, width - 1);
@@ -79,11 +90,11 @@ namespace SnakeGit
                     wplayer.controls.play();
                 }
             }
-            graphics.FillEllipse(greenBrush, apple.X * 10, apple.Y * 10, 10, 10);
-            if (direction == "up") snake[0].Y -= 1;
-            if (direction == "down") snake[0].Y += 1;
-            if (direction == "left") snake[0].X -= 1;
-            if (direction == "right") snake[0].X += 1;
+            graphics.FillEllipse(greenBrush, apple.X * SIZE, apple.Y * SIZE, SIZE, SIZE);
+            if (direction == Direction.Up) snake[0].Y -= 1;
+            if (direction == Direction.Down) snake[0].Y += 1;
+            if (direction == Direction.Left) snake[0].X -= 1;
+            if (direction == Direction.Right) snake[0].X += 1;
 
             if (length > 10000 - 3)
             {
@@ -96,29 +107,26 @@ namespace SnakeGit
             }
             if (length < 4) length++;
 
-            pictureBox1.Invalidate();
+            PictureBox.Invalidate();
         }
-
-        // Второй таймер я не делал потому-что в жепу его
-        // Сетку тоже
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Up)
             {
-                direction = "up";
+                direction = Direction.Up;
             }
             if (e.KeyCode == Keys.Down)
             {
-                direction = "down";
+                direction = Direction.Down;
             }
             if (e.KeyCode == Keys.Left)
             {
-                direction = "left";
+                direction = Direction.Left;
             }
             if (e.KeyCode == Keys.Right)
             {
-                direction = "right";
+                direction = Direction.Right;
             }
         }
     }
