@@ -15,6 +15,7 @@ namespace SnakeGit
         SolidBrush black_brush;
         SolidBrush green_brush;
         SolidBrush white_brush;
+        Pen black_pen;
         Point[] snake;
         Point apple;
         Random r;
@@ -33,10 +34,9 @@ namespace SnakeGit
             white_brush = new SolidBrush(Color.White);
             green_brush = new SolidBrush(Color.Green);
             black_brush = new SolidBrush(Color.Black);
-
+            black_pen = new Pen(Color.Black, 3);
             apple.X = r.Next(1, width);
             apple.Y = r.Next(1, height);
-            // g.FillEllipse(green_brush, apple.X * 10, apple.Y * 10, 10, 10);
         }
         string direction = "up";
 
@@ -45,13 +45,20 @@ namespace SnakeGit
             Graphics g = Graphics.FromImage(pictureBox1.Image);
 
             g.FillRectangle(white_brush, 0, 0, pictureBox1.Width, pictureBox1.Height);
+            g.DrawRectangle(black_pen, 0, 0, width * 10, height * 10);
             if (len > 4)
-            for (int i = 1; i < len; i++)
-                for (int j = i + 1; j < len; j++)
-                {
-                    if (snake[i].X == snake[j].X && snake[i].Y == snake[j].Y)
-                        len = 3;
-                }
+                for (int i = 1; i < len; i++)
+                    for (int j = i + 1; j < len; j++)
+                    {
+                        if (snake[i].X == snake[j].X && snake[i].Y == snake[j].Y)
+                        {
+                            len = 3;
+                            WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
+
+                            wplayer.URL = "oof.mp3";
+                            wplayer.controls.play();
+                        }
+                    }
 
             for (int i = 0; i < len; i++)
             {
@@ -65,6 +72,10 @@ namespace SnakeGit
                     apple.X = r.Next(1, width - 1);
                     apple.Y = r.Next(1, height - 1);
                     len++;
+                    WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
+
+                    wplayer.URL = "eating.mp3";
+                    wplayer.controls.play();
                 }
             }
             g.FillEllipse(green_brush, apple.X * 10, apple.Y * 10, 10, 10);
@@ -86,6 +97,9 @@ namespace SnakeGit
 
             pictureBox1.Invalidate();
         }
+
+        // Второй таймер я не делал потому-что в жепу его
+        // Сетку тоже
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
