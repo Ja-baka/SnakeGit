@@ -22,32 +22,41 @@ namespace SnakeGit
     public partial class Form : System.Windows.Forms.Form
     {
         private const int SIZE = 30;
+        private readonly Random random;
+        private readonly int width;
+        private readonly int height;
+
         private readonly SolidBrush blackBrush;
         private readonly SolidBrush greenBrush;
         private readonly SolidBrush whiteBrush;
         private readonly Pen blackPen;
+
         private Point[] snake;
         private Point apple;
-        private readonly Random random;
-        private int length = 1;
-        private readonly int width;
-        private readonly int height;
+
+        private int length = 3;
         private Direction direction = Direction.Up;
-        // private string direction = "up";
+
         public Form()
         {
             InitializeComponent();
+
             random = new Random();
             snake = new Point[10000];
+
             PictureBox.Image = new Bitmap(PictureBox.Width, PictureBox.Height);
+
             width = PictureBox.Width / SIZE;
             height = PictureBox.Height / SIZE;
+
             snake[0].X = width / 2;
             snake[0].Y = height / 2;
+
             whiteBrush = new SolidBrush(Color.White);
             greenBrush = new SolidBrush(Color.Green);
             blackBrush = new SolidBrush(Color.Black);
             blackPen = new Pen(Color.Black, 3);
+
             apple.X = random.Next(1, width);
             apple.Y = random.Next(1, height);
         }
@@ -74,10 +83,10 @@ namespace SnakeGit
 
             for (int i = 0; i < length; i++)
             {
-                if (snake[i].X < 0) snake[i].X += width;
-                if (snake[i].X > width) snake[i].X -= width;
-                if (snake[i].Y < 0) snake[i].Y += height;
-                if (snake[i].Y > height) snake[i].Y -= height;
+                snake[0].X += snake[0].X < 0 ? width : 0;
+                snake[0].Y += snake[0].Y < 0 ? height : 0;
+                snake[0].X -= snake[0].X >= width ? width : 0;
+                snake[0].Y -= snake[0].Y >= height ? height : 0;
                 graphics.FillEllipse(blackBrush, snake[i].X * SIZE, snake[i].Y * SIZE, SIZE, SIZE);
                 if (apple.X == snake[i].X && apple.Y == snake[i].Y)
                 {
@@ -91,10 +100,21 @@ namespace SnakeGit
                 }
             }
             graphics.FillEllipse(greenBrush, apple.X * SIZE, apple.Y * SIZE, SIZE, SIZE);
-            if (direction == Direction.Up) snake[0].Y -= 1;
-            if (direction == Direction.Down) snake[0].Y += 1;
-            if (direction == Direction.Left) snake[0].X -= 1;
-            if (direction == Direction.Right) snake[0].X += 1;
+            switch (direction)
+            {
+                case Direction.Up:
+                    snake[0].Y -= 1;
+                    break;
+                case Direction.Down:
+                    snake[0].Y += 1;
+                    break;
+                case Direction.Left:
+                    snake[0].X -= 1;
+                    break;
+                case Direction.Right:
+                    snake[0].X += 1;
+                    break;
+            }
 
             if (length > 10000 - 3)
             {
@@ -112,22 +132,22 @@ namespace SnakeGit
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Up)
+            switch (e.KeyCode)
             {
-                direction = Direction.Up;
+                case Keys.Up:
+                        direction = Direction.Up;
+                    break;
+                case Keys.Down:
+                        direction = Direction.Down;
+                    break;
+                case Keys.Left:
+                        direction = Direction.Left;
+                    break;
+                case Keys.Right:
+                        direction = Direction.Right;
+                    break;
             }
-            if (e.KeyCode == Keys.Down)
-            {
-                direction = Direction.Down;
-            }
-            if (e.KeyCode == Keys.Left)
-            {
-                direction = Direction.Left;
-            }
-            if (e.KeyCode == Keys.Right)
-            {
-                direction = Direction.Right;
-            }
+            
         }
     }
 }
