@@ -30,43 +30,43 @@ namespace SnakeGit
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.PictureBox = new System.Windows.Forms.PictureBox();
-            this.Timer = new System.Windows.Forms.Timer(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).BeginInit();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // PictureBox
+            // pictureBox
             // 
-            this.PictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PictureBox.Location = new System.Drawing.Point(0, 0);
-            this.PictureBox.Name = "PictureBox";
-            this.PictureBox.Size = new System.Drawing.Size(434, 411);
-            this.PictureBox.TabIndex = 0;
-            this.PictureBox.TabStop = false;
+            this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(434, 411);
+            this.pictureBox.TabIndex = 0;
+            this.pictureBox.TabStop = false;
             // 
-            // Timer
+            // timer
             // 
-            this.Timer.Enabled = true;
-            this.Timer.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timer.Enabled = true;
+            this.timer.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(434, 411);
-            this.Controls.Add(this.PictureBox);
+            this.Controls.Add(this.pictureBox);
             this.Name = "Form";
             this.Text = "Snake";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-            ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox PictureBox;
-        private System.Windows.Forms.Timer Timer;
+        private System.Windows.Forms.PictureBox pictureBox;
+        private System.Windows.Forms.Timer timer;
     }
 }
 

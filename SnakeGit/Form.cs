@@ -21,7 +21,7 @@ namespace SnakeGit
 
     public partial class Form : System.Windows.Forms.Form
     {
-        private const int SIZE = 30;
+        private const int SnakeScale = 30;
         private readonly Random random;
         private readonly int width;
         private readonly int height;
@@ -37,6 +37,8 @@ namespace SnakeGit
         private int length = 3;
         private Direction direction = Direction.Up;
 
+        private bool directionChanged = false;
+
         public Form()
         {
             InitializeComponent();
@@ -44,10 +46,10 @@ namespace SnakeGit
             random = new Random();
             snake = new Point[10000];
 
-            PictureBox.Image = new Bitmap(PictureBox.Width, PictureBox.Height);
+            pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
 
-            width = PictureBox.Width / SIZE;
-            height = PictureBox.Height / SIZE;
+            width = pictureBox.Width / SnakeScale;
+            height = pictureBox.Height / SnakeScale;
 
             snake[0].X = width / 2;
             snake[0].Y = height / 2;
@@ -56,12 +58,12 @@ namespace SnakeGit
             apple.Y = random.Next(1, height);
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void Timer1_Tick(object sender, EventArgs e)
         {
-            Graphics graphics = Graphics.FromImage(PictureBox.Image);
+            Graphics graphics = Graphics.FromImage(pictureBox.Image);
 
-            graphics.FillRectangle(greenBrush, 0, 0, PictureBox.Width, PictureBox.Height);
-            graphics.DrawRectangle(blackPen, 0, 0, width * SIZE, height * SIZE);
+            graphics.FillRectangle(greenBrush, 0, 0, pictureBox.Width, pictureBox.Height);
+            graphics.DrawRectangle(blackPen, 0, 0, width * SnakeScale, height * SnakeScale);
 
             if (length > 4)
             {
@@ -72,9 +74,10 @@ namespace SnakeGit
                         if (snake[i].X == snake[j].X && snake[i].Y == snake[j].Y)
                         {
                             length = 3;
-                            WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
-
-                            wplayer.URL = "oof.mp3";
+                            WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer
+                            {
+                                URL = "oof.mp3"
+                            };
                             wplayer.controls.play();
                         }
                     }
@@ -87,20 +90,21 @@ namespace SnakeGit
                 snake[0].Y += snake[0].Y < 0 ? height : 0;
                 snake[0].X -= snake[0].X >= width ? width : 0;
                 snake[0].Y -= snake[0].Y >= height ? height : 0;
-                graphics.FillRectangle(bluekBrush, snake[i].X * SIZE, snake[i].Y * SIZE, SIZE, SIZE);
+                graphics.FillRectangle(bluekBrush, snake[i].X * SnakeScale, snake[i].Y * SnakeScale, SnakeScale, SnakeScale);
                 if (apple.X == snake[i].X && apple.Y == snake[i].Y)
                 {
                     apple.X = random.Next(1, width - 1);
                     apple.Y = random.Next(1, height - 1);
                     length++;
-                    WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
-
-                    wplayer.URL = "eating.mp3";
+                    WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer
+                    {
+                        URL = "eating.mp3"
+                    };
                     wplayer.controls.play();
                 }
             }
 
-            graphics.FillEllipse(redBrush, apple.X * SIZE, apple.Y * SIZE, SIZE, SIZE);
+            graphics.FillEllipse(redBrush, apple.X * SnakeScale, apple.Y * SnakeScale, SnakeScale, SnakeScale);
             switch (direction)
             {
                 case Direction.Up:
@@ -128,24 +132,49 @@ namespace SnakeGit
             }
             if (length < 4) length++;
 
-            PictureBox.Invalidate();
+            pictureBox.Invalidate();
+            directionChanged = false;
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
+                case Keys.W: 
                 case Keys.Up:
+                    if (direction != Direction.Down &&
+                        !directionChanged)
+                    {
                         direction = Direction.Up;
+                        directionChanged = true;
+                    }
                     break;
+                case Keys.S:
                 case Keys.Down:
+                    if (direction != Direction.Up &&
+                        !directionChanged)
+                    {
                         direction = Direction.Down;
+                        directionChanged = true;
+                    }
                     break;
+                case Keys.A:
                 case Keys.Left:
+                    if (direction != Direction.Right &&
+                        !directionChanged)
+                    {
                         direction = Direction.Left;
+                        directionChanged = true;
+                    }
                     break;
+                case Keys.D:
                 case Keys.Right:
+                    if (direction != Direction.Left &&
+                        !directionChanged)
+                    {
                         direction = Direction.Right;
+                        directionChanged = true;
+                    }
                     break;
             }
             
